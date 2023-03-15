@@ -62,6 +62,9 @@ async fn app() -> Html<String> {
     };
 
     Html(render_lazy(rsx! {
+        head {
+            title { "Is Lenny Free?" }
+        }
         body {
             style: "background-color: {colour}; color: white;",
             div {
@@ -74,7 +77,7 @@ async fn app() -> Html<String> {
 
 #[tokio::main]
 async fn main() {
-    let addr = std::net::SocketAddr::from(([127, 0, 0, 1], 3000));
+    let addr = std::net::SocketAddr::from(([127, 0, 0, 1], 80));
     println!("Listening on {addr}!");
 
     axum::Server::bind(&addr)
