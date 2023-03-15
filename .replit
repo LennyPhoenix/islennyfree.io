@@ -1,0 +1,18 @@
+run = "target/release/islennyfree"
+
+[packager]
+language = "rust"
+
+[packager.features]
+packageSearch = true
+
+[nix]
+channel = "unstable"
+
+[gitHubImport]
+requiredFiles = [".replit", "replit.nix"]
+
+[languages]
+
+[languages.rust]
+pattern = "**/*.rs"
