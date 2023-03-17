@@ -1,9 +1,16 @@
 mod schedule;
 
-use axum::{response::Html, routing::get, Router};
-use chrono::{NaiveTime, Utc};
+use std::{
+    net::{Ipv4Addr, SocketAddr},
+    process::exit,
+};
+
+use axum::{response::Html, routing::get, Router, Server};
+use chrono::Utc;
 use dioxus::prelude::*;
 use dioxus_ssr::render_lazy;
+
+use clap::Parser;
 
 async fn app() -> Html<String> {
     let activities = schedule::load_schedule("activities");
@@ -75,13 +82,26 @@ async fn app() -> Html<String> {
     }))
 }
 
+#[derive(Parser)]
+struct Args {
+    #[arg(long, short, default_value_t = String::from("127.0.0.1"))]
+    ip: String,
+
+    #[arg(long, short, default_value_t = 8080)]
+    port: u16,
+}
+
 #[tokio::main]
-async fn main() {
-    let addr = std::net::SocketAddr::from(([127, 0, 0, 1], 80));
+async fn main() -> Result<(), String> {
+    let args = Args::parse();
+    let ip = args.ip.parse::<Ipv4Addr>().map_err(|e| format!("{e}"))?;
+    let addr = SocketAddr::from((ip, args.port));
     println!("Listening on {addr}!");
 
-    axum::Server::bind(&addr)
+    Server::bind(&addr)
         .serve(Router::new().route("/", get(app)).into_make_service())
         .await
         .unwrap();
+
+    Ok(())
 }
