@@ -1,4 +1,4 @@
-run = "target/release/islennyfree"
+run = "target/release/islennyfree -i 0.0.0.0 -p 80"
 
 [packager]
 language = "rust"
