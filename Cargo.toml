@@ -1,5 +1,7 @@
 [package]
 name = "islennyfree"
+description = "A website to show if Lenny is currently free."
+license = "MIT"
 version = "0.1.0"
 edition = "2021"
 
